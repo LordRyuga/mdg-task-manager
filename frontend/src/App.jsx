@@ -5,8 +5,10 @@ import Login from './features/auth/login'
 
 import Register from './features/auth/register'
 import ProfilePage from './features/profile/profilePage'
+import HomePage from './features/profile/HomePage'
 
 import './App.css'
+
 
 
 function App() {
@@ -14,6 +16,7 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
+          <Route path='/home' element={<HomePage />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<ProfilePage />} />

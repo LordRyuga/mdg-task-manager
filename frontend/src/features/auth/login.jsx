@@ -1,4 +1,4 @@
-import react, {useState} from "react";
+import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
@@ -53,6 +53,11 @@ const login = () => {
                     document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;`;
                 });
             }}>LogOut</button>
+            <div>
+                <p>Don't Have An Account? Register here:</p>
+                <button onClick={() => navigate("/register")}>Register</button>
+            </div>
+            
         </div>
     );
 }

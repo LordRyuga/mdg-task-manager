@@ -11,6 +11,7 @@ const profilePage = () => {
         email: "",
         firstName: "",
         lastName: "",
+        isStudent: true,
     });
 
     useEffect(() => {
