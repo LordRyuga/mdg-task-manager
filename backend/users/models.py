@@ -61,24 +61,13 @@ class CustomUser(AbstractBaseUser):
         return self.username    
     objects = CustomUserManager()
 
-class Teacher(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete = models.CASCADE)
-
-    def __str__(self):
-        return f"{self.user.firstName} {self.user.lastName} - ({self.user.email})"
-
-class Student(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete = models.CASCADE)
-
-    def __str__(self):
-        return f"{self.user.firstName} {self.user.lastName} - ({self.user.email})"
 
 class Classrooms(models.Model):
     class_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=111)
     created_at = models.DateTimeField(auto_now_add=True)
-    students = models.ManyToManyField(Student, related_name = "classrooms")
-    teachers = models.ManyToManyField(Teacher, related_name = "classrooms")
+    users = models.ManyToManyField(CustomUser, related_name = "classrooms")
+    
 
     def __str__(self):
         return f"Classroom {self.name} (ID: {self.class_id})"
@@ -88,15 +77,16 @@ class Assignments(models.Model):
     name = models.CharField(max_length=111)
     class_id = models.ForeignKey('Classrooms', on_delete = models.CASCADE, related_name = 'assignments')
     total_Marks = models.IntegerField(default = 0)
+    users = models.ManyToManyField(CustomUser, related_name='assignmentsUser')
 
     def __str__(self):
         return f"Assignment {self.name} (ID: {self.ass_id})"
 
 class Submission(models.Model):
-    student = models.ForeignKey(Student, on_delete = models.CASCADE, related_name = 'submissions')
+    users = models.ForeignKey(CustomUser, on_delete = models.CASCADE, related_name = 'submissions')
     assignment = models.ForeignKey(Assignments, on_delete = models.CASCADE, related_name = 'submissions')
     marks = models.IntegerField(default=0)
-    
+    submitted_url = models.URLField()
 
     def __str__(self):
         return f"{self.student.user.firstName} - {self.assignment.name} - Marks: {self.marks}"

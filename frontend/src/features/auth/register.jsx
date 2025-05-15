@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import './login.jsx';
 import axios from "axios";
-import login from "./login.jsx";
 
 
 const Register = () => {
@@ -16,6 +15,7 @@ const Register = () => {
         password: "",
         isStudent: true,
     });
+
 
     const handleChange = (e) => {
         setForm({
