@@ -31,7 +31,7 @@ const HomePage = () => {
     const navigate = useNavigate();
     // creating a form which has classroom_id for joining a classroom
     const [joinClassForm, setForm] = useState({
-        classroom_id: "",
+        class_id: "",
     });
     //creating a form which has classroom_name for creating a classroom
     const [createClassForm, setForm1] = useState({
@@ -77,7 +77,7 @@ const HomePage = () => {
         <div className="home-container">
             <h2>Home Page</h2>
             <form onSubmit={handleSubmitJoin}>
-                <input type="text" name="classroom_id" placeholder="Classroom ID" value={joinClassForm.classroom_id} onChange={handleChangeJoin} required />
+                <input type="text" name="class_id" placeholder="Classroom ID" value={joinClassForm.class_id} onChange={handleChangeJoin} required />
                 <button type="submit">Join Classroom</button>
             </form>
             {userData && !userData.isStudent && (
