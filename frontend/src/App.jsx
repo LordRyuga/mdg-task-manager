@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import Login from './features/auth/login'
-// import Home from './features/home/home'
+
 import Register from './features/auth/register'
 
 import './App.css'
