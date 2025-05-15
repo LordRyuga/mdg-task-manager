@@ -1,7 +1,11 @@
 import react, {useState} from "react";
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
 const login = () => {
+
+    const navigate = useNavigate();
+
     const [form, setForm] = useState({
             username: "",
             password: "",
@@ -21,6 +25,7 @@ const login = () => {
             console.log(response.data);
             document.cookie = `access=${response.data.access}; path=/; secure;`;
             document.cookie = `refresh=${response.data.refresh}; path=/; secure;`;
+            navigate("/profile");
         } catch (error) {
             console.error("Error logging in user:", error);
         }

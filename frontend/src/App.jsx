@@ -4,6 +4,7 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import Login from './features/auth/login'
 // import Home from './features/home/home'
 import Register from './features/auth/register'
+import ProfilePage from './features/profile/profilePage'
 
 import './App.css'
 
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Routes>
       </div>
     </Router>
