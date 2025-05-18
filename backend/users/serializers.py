@@ -33,7 +33,17 @@ class ClassroomsSerializer(serializers.ModelSerializer):
 class AssignmentsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Assignments
-        fields = ['ass_id', 'name', 'class_id', 'users', 'description_User', 'instructions', 'dueDate']        
+        fields = ['ass_id', 'name', 'class_id', 'descriptionUrl', 'instructions', 'dueDate', 'total_Marks']        
+        
+    def create(self, validated_data):
+
+        classroom = validated_data.get('class_id')
+        assignment = Assignments.objects.create(**validated_data)
+        users_in_class = classroom.users.all()
+
+        assignment.users.set(users_in_class)
+
+        return assignment
 
 class SubmissionSerializer(serializers.ModelSerializer):
     class Meta:

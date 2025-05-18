@@ -1,34 +1,35 @@
 import React, {useEffect, useState} from "react";
+import {Link} from "react-router-dom";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import Navbar from '../../assets/navbar.jsx';
+import { useUser } from "./userContext.jsx";
 
 
 const HomePage = () => {
-    //Getting the user data from the backend
-     const [userData, setUserData] = useState({
-        username: "",
-        email: "",
-        firstName: "",
-        lastName: "",
-        isStudent: true,
-    });
 
+    //fetching all classrooms from the backend
+    const navigate = useNavigate();
+    const [classrooms, setClassrooms] = useState([]);
+    const {userData} = useUser();
+    // console.log(userData);
+  
     useEffect(() => {
-        const fetchUserData = async () => {
+        const fetchClassrooms = async () => {
             try {
-                const response = await axios.get("http://localhost:5173/api/auth/users/get_user/", {withCredentials: true});
-                setUserData(response.data);
+                const response = await axios.get('/api/classrooms/getAllClassrooms/');
                 console.log(response.data);
+                setClassrooms(response.data);
             } catch (error) {
-                console.error("Error fetching user data:", error);
+                console.error('Error fetching classrooms:', error);
             }
         };
-        fetchUserData();
+
+        fetchClassrooms();
     }, []);
 
 
-    const navigate = useNavigate();
+
     // creating a form which has classroom_id for joining a classroom
     const [joinClassForm, setForm] = useState({
         class_id: "",
@@ -55,7 +56,7 @@ const HomePage = () => {
         e.preventDefault();
         try {
             const response = await axios.post("http://localhost:5173/api/classrooms/joinClassroom/", joinClassForm, {withCredentials: true});
-            console.log(response.data);
+            // console.log(response.data);
             navigate("/profile");
         } catch (error) {
             console.error("Error joining classroom:", error);
@@ -65,7 +66,7 @@ const HomePage = () => {
         e.preventDefault();
         try {
             const response = await axios.post("http://localhost:5173/api/classrooms/createClassroom/", createClassForm, {withCredentials: true});
-            console.log(response.data);
+            // console.log(response.data);
             navigate("/profile");
         } catch (error) {
             console.error("Error creating classroom:", error);
@@ -75,6 +76,7 @@ const HomePage = () => {
     
     return(
         <div className="home-container">
+            <Navbar/>
             <h2>Home Page</h2>
             <form onSubmit={handleSubmitJoin}>
                 <input type="text" name="class_id" placeholder="Classroom ID" value={joinClassForm.class_id} onChange={handleChangeJoin} required />
@@ -86,6 +88,13 @@ const HomePage = () => {
                     <button type="submit">Create Classroom</button>
                 </form>
             )}
+            <ul>
+              {classrooms.map(classroom => (
+                <li key={classroom.class_id}>
+                  <Link to={`/classroom/${classroom.class_id}`}>{classroom.name}</Link>
+                </li>
+              ))}
+            </ul>
         </div>
     )
 }
