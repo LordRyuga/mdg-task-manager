@@ -32,9 +32,10 @@ class AssignmentViewSet(viewsets.GenericViewSet):
     
     @action(detail=False, methods=['post'])
     def submitAssignment(self, request):
-        print(request.data)
-
+        assId = request.data.get('assId')
+        submitUrl = request.data.get('submitUrl')
         return Response(status=status.HTTP_200_OK)
+    
     
         
 class ClassroomsViewSet(viewsets.GenericViewSet):
@@ -84,10 +85,4 @@ class ClassroomsViewSet(viewsets.GenericViewSet):
         serializer = ClassroomsSerializer(classroom)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
-class SubmissionViewset(viewsets.GenericViewSet):
-
-    @action(detail=False, methods=['get'])
-    def insertSubmission(self, request):
-        user
-        
 
