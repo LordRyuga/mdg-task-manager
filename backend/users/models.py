@@ -78,9 +78,9 @@ class Assignments(models.Model):
     class_id = models.ForeignKey('Classrooms', on_delete = models.CASCADE, related_name = 'assignments')
     total_Marks = models.IntegerField(default = 0)
     users = models.ManyToManyField(CustomUser, related_name='assignmentsUser')
-    descriptionUrl = models.CharField(max_length=200)
-    instructions = models.CharField(max_length=150)
-    dueDate = models.DateTimeField()
+    descriptionUrl = models.URLField(null=True)
+    instructions = models.CharField(max_length=150, null=True)
+    dueDate = models.DateTimeField(null=True)
 
     def __str__(self):
         return f"Assignment {self.name} (ID: {self.ass_id})"

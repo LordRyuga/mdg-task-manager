@@ -1,10 +1,12 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
+import { useUser } from "../profile/userContext";
 
 const login = () => {
 
     const navigate = useNavigate();
+    const { setUserData } = useUser();
 
     const [form, setForm] = useState({
             username: "",
@@ -25,6 +27,9 @@ const login = () => {
             console.log(response.data);
             document.cookie = `access=${response.data.access}; path=/; secure;`;
             document.cookie = `refresh=${response.data.refresh}; path=/; secure;`;
+
+            const response2 = await axios.get("http://localhost:5173/api/auth/users/get_user/", { withCredentials: true });
+            await setUserData(response2.data);
             navigate("/profile");
         } catch (error) {
             console.error("Error logging in user:", error);
