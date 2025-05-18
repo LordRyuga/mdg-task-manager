@@ -32,9 +32,10 @@ class AssignmentViewSet(viewsets.GenericViewSet):
     
     @action(detail=False, methods=['post'])
     def submitAssignment(self, request):
-        print(request.data)
-
+        assId = request.data.get('assId')
+        submitUrl = request.data.get('submitUrl')
         return Response(status=status.HTTP_200_OK)
+    
     
     @action(detail=False, methods=['post'])
     def createAssignment(self, request):

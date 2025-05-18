@@ -86,7 +86,7 @@ class Assignments(models.Model):
         return f"Assignment {self.name} (ID: {self.ass_id})"
 
 class Submission(models.Model):
-    users = models.ForeignKey(CustomUser, on_delete = models.CASCADE, related_name = 'submissions')
+    user = models.ForeignKey(CustomUser, on_delete = models.CASCADE, related_name = 'submissions')
     assignment = models.ForeignKey(Assignments, on_delete = models.CASCADE, related_name = 'submissions')
     marks = models.IntegerField(default=0)
     submitted_url = models.URLField()
