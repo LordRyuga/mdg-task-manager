@@ -33,7 +33,7 @@ class ClassroomsSerializer(serializers.ModelSerializer):
 class AssignmentsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Assignments
-        fields = ['ass_id', 'name', 'class_id', 'users']        
+        fields = ['ass_id', 'name', 'class_id', 'users', 'description_User', 'instructions', 'dueDate']        
 
 class SubmissionSerializer(serializers.ModelSerializer):
     class Meta:

@@ -3,8 +3,8 @@ from rest_framework import status, views, permissions, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .serializers import userRegisterationSerializer
-from .serializers import ClassroomsSerializer
-from .models import CustomUser, Classrooms
+from .serializers import ClassroomsSerializer, AssignmentsSerializer, SubmissionSerializer
+from .models import CustomUser, Classrooms, Assignments, Submission
 
 class UserViewSet(viewsets.GenericViewSet):
 
@@ -83,7 +83,11 @@ class ClassroomsViewSet(viewsets.GenericViewSet):
 
         serializer = ClassroomsSerializer(classroom)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-        
-        
+    
+class SubmissionViewset(viewsets.GenericViewSet):
+
+    @action(detail=False, methods=['get'])
+    def insertSubmission(self, request):
+        user
         
 
