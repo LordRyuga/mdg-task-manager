@@ -67,6 +67,7 @@ class Classrooms(models.Model):
     name = models.CharField(max_length=111)
     created_at = models.DateTimeField(auto_now_add=True)
     users = models.ManyToManyField(CustomUser, related_name = "classrooms")
+    description = models.CharField(max_length=150, null=True)
     
 
     def __str__(self):
