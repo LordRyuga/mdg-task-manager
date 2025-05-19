@@ -9,12 +9,12 @@ export const UserContextProvider = ({children}) => {
     const fetchUserData = async () => {
         try{
             const response = await axios.get("http://localhost:5173/api/auth/users/get_user/");
-            console.log(response.data);
+            // console.log(response.data);
             setUserData(response.data);
         }catch(error)
         {
             console.log("user not logged in");
-            console.log(error);
+            // console.log(error);
             setUserData(null);
         }
     }

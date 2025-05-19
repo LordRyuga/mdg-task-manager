@@ -1,6 +1,8 @@
-import React, {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Navbar from '../../assets/navbar.jsx';
+import { Link } from "react-router-dom";
 
 const profilePage = () => {
 
@@ -17,7 +19,7 @@ const profilePage = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get("http://localhost:5173/api/auth/users/get_user/", {withCredentials: true});
+                const response = await axios.get("http://localhost:5173/api/auth/users/get_user/", { withCredentials: true });
                 setUserData(response.data);
                 console.log(response.data);
             } catch (error) {
@@ -36,8 +38,23 @@ const profilePage = () => {
         window.location.reload();
     };
 
-    return(
+    console.log(userData);
+
+    if (userData.username === '') {
+        return (
+            <div className="home-container">
+                <Navbar />
+                <h2>Please Login to access this page</h2>
+                <Link to="/login">Login</Link>
+                <br></br>
+                <Link to="/register">Register</Link>
+            </div>
+        )
+    }
+
+    return (
         <div className="profile-container">
+            <Navbar />
             <h2>User Profile</h2>
             <p><strong>Username:</strong> {userData.username}</p>
             <p><strong>Email:</strong> {userData.email}</p>

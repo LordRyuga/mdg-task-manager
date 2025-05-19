@@ -28,7 +28,7 @@ class ClassroomsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Classrooms
-        fields = ['class_id', 'name', 'created_at', 'user']
+        fields = ['class_id', 'name', 'created_at', 'user', 'description']
 
 class AssignmentsSerializer(serializers.ModelSerializer):
     class Meta:
