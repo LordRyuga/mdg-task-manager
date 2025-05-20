@@ -180,8 +180,7 @@ class ClassroomsViewSet(viewsets.GenericViewSet):
         user = request.user
         print(request)
         print(request.data)
-        # print(user)
-        # print(user.isStudent)
+        
         if user.isStudent:
             return Response({"error": "Only teachers can create classrooms"}, status=status.HTTP_403_FORBIDDEN)
         
@@ -223,14 +222,26 @@ class ClassroomsViewSet(viewsets.GenericViewSet):
             return Response({"error": "Classroom not found"}, status=status.HTTP_404_NOT_FOUND)
         
         assignments = classroom.assignments.all()
-        # print(assignments)
+        
         serializer = AssignmentsSerializer(assignments, many=True)
-        # print(serializer.data)
+        
         return Response(serializer.data, status=status.HTTP_200_OK)
     
+    @action(detail=False, methods=['post'])
+    def leave(self, request):
+        class_id = request.data.get('class_id')
+        user = request.user
 
+        try:
+            classroom = Classrooms.objects.get(class_id = class_id)
+        except:
+            return Response({"error": "Classroom not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+        classroom.users.remove(user)
 
+        for assignment in classroom.assignments.all():
+            assignment.users.remove(user)
         
-        
+        return Response({"message": "Successfully left the classroom"}, status=status.HTTP_200_OK)
         
 
