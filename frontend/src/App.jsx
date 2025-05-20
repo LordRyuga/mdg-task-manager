@@ -37,6 +37,7 @@ const darkTheme = createTheme({
 });
 
 import './App.css'
+import AssignmentPage from './features/assignments/assignment'
 
 
 function App() {
@@ -53,6 +54,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/classroom/:class_id" element={<ClassroomPage />} />
+                <Route path="assignment/:ass_id" element={<AssignmentPage />} />
                 <Route path="/calendar" element={<AssignmentCalendarPage />} />
               </Routes>
             </div>
