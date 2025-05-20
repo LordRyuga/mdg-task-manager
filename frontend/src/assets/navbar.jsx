@@ -76,7 +76,10 @@ const Navbar = () => {
                 Sign up
               </MenuItem>
             </SubMenu>
-            <MenuItem>Calendar</MenuItem>
+            <MenuItem
+              component={<Link to="/Calendar" />}
+            >
+              Calendar</MenuItem>
             <MenuItem
               component={<Link to="/profile" />}
             >

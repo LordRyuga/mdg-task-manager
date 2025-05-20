@@ -8,6 +8,7 @@ import LoginPage, { Username, Password, Submit, Title, Logo, Reset, Footer } fro
 import LoginLogo from 'react-login-page/logo';
 
 
+
 const styles = {height: 500, width: 400, marginLeft: '25rem'};
 
 const login = () => {
@@ -17,9 +18,9 @@ const login = () => {
     const { fetchUserClassrooms } = useUserClassroom();
 
     const [form, setForm] = useState({
-            username: "",
-            password: "",
-        });
+        username: "",
+        password: "",
+    });
     
     const handleChange = (e) => {
         setForm({
@@ -35,7 +36,7 @@ const login = () => {
             console.log(response.data);
             document.cookie = `access=${response.data.access}; path=/; secure;`;
             document.cookie = `refresh=${response.data.refresh}; path=/; secure;`;
-
+            
             const response2 = await axios.get("http://localhost:5173/api/auth/users/get_user/", { withCredentials: true });
             await setUserData(response2.data);
             await fetchUserClassrooms();
@@ -47,6 +48,7 @@ const login = () => {
     return(
         <div className="login-container">
             <Navbar />
+            
 
             <div style={styles}>
                 <LoginPage>
