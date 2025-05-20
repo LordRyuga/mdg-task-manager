@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from '../../assets/navbar.jsx';
 import { useUser } from "./userContext.jsx";
+import { useUserClassroom } from "./userClassroomsContext.jsx";
 import Card from '../../assets/Card.jsx';
 
 
@@ -14,16 +15,11 @@ const HomePage = () => {
     const navigate = useNavigate();
     const [classrooms, setClassrooms] = useState([]);
     const { userData } = useUser();
+    const { userClassrooms ,fetchUserClassrooms } = useUserClassroom();
 
     useEffect(() => {
         const fetchClassrooms = async () => {
-            try {
-                const response = await axios.get('/api/classrooms/getAllClassrooms/', { withCredentials: true });
-                console.log(response.data);
-                setClassrooms(response.data);
-            } catch (error) {
-                console.error('Error fetching classrooms:', error);
-            }
+            setClassrooms(userClassrooms);
         };
 
         fetchClassrooms();
@@ -58,6 +54,7 @@ const HomePage = () => {
         e.preventDefault();
         try {
             const response = await axios.post("http://localhost:5173/api/classrooms/joinClassroom/", joinClassForm, { withCredentials: true });
+            await fetchUserClassrooms();
             // console.log(response.data);
             navigate("/profile");
         } catch (error) {
@@ -68,6 +65,7 @@ const HomePage = () => {
         e.preventDefault();
         try {
             const response = await axios.post("http://localhost:5173/api/classrooms/createClassroom/", createClassForm, { withCredentials: true });
+            await fetchUserClassrooms();
             // console.log(response.data);
             navigate("/profile");
         } catch (error) {
@@ -109,7 +107,7 @@ const HomePage = () => {
 
             </div>
             <div className="classroomCards" style={ { display: 'flex', flexWrap: 'wrap', justifyContent: 'center' } }>
-                {classrooms.map(classroom => (
+                {classrooms && classrooms.map(classroom => (
                     <span className="classroomCard" style={ { display: 'flex', justifyContent: 'center', margin: '1em' } } key={classroom.class_id}>
                         <Card name={classroom.name} description={classroom.description} class_id={classroom.class_id} />
                     </span>

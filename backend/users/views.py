@@ -3,7 +3,7 @@ from rest_framework import status, views, permissions, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .serializers import userRegisterationSerializer
-from .serializers import ClassroomsSerializer, AssignmentsSerializer, SubmissionSerializer,SubmissionStatusSerializer
+from .serializers import ClassroomsSerializer, AssignmentsSerializer, SubmissionSerializer,SubmissionStatusSerializer, AssignmentCalendarSerializer
 from .models import CustomUser, Classrooms, Assignments, Submission
 
 class UserViewSet(viewsets.GenericViewSet):
@@ -23,6 +23,13 @@ class UserViewSet(viewsets.GenericViewSet):
     def get_user(self, request):
         user = request.user
         serializer = userRegisterationSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    @action(detail=False, methods=['get'], permission_classes = [permissions.IsAuthenticated])
+    def get_user_assignments(self, request):
+        user = request.user
+        assignments = user.assignmentsUser.all()
+        serializer = AssignmentCalendarSerializer(assignments, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 

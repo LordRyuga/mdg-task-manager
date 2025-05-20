@@ -48,7 +48,7 @@ class AssignmentsSerializer(serializers.ModelSerializer):
 class SubmissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Submission
-        fields = ['user', 'assignment', 'marks', 'submitted_url']        
+        fields = ['user', 'assignment', 'marks', 'submitted_url']       
 
 class SubmissionStatusSerializer(serializers.ModelSerializer):
     student_id = serializers.IntegerField(source='user.id', read_only=True)
@@ -62,3 +62,11 @@ class SubmissionStatusSerializer(serializers.ModelSerializer):
     def get_submitted(self, obj):
         return bool(obj.submitted_url)
 
+
+
+class AssignmentCalendarSerializer(serializers.ModelSerializer):
+    class_name = serializers.CharField(source='class_id.name', read_only=True)
+
+    class Meta:
+        model = Assignments
+        fields = ['ass_id', 'name', 'dueDate', 'class_name']
