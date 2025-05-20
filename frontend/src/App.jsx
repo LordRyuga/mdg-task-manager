@@ -8,9 +8,9 @@ import ProfilePage from './features/profile/profilePage'
 import HomePage from './features/profile/HomePage'
 import ClassroomPage from './features/classroooms/classroom'
 import { UserContextProvider } from './features/profile/userContext'
+import AssignmentPage from './features/assignments/assignment'
 
 import './App.css'
-
 
 
 function App() {
@@ -24,6 +24,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/classroom/:class_id" element={<ClassroomPage />} />
+            <Route path="/assignment/:ass_id" element={<AssignmentPage />} />
           </Routes>
         </div>
       </Router>

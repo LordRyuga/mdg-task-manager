@@ -12,7 +12,7 @@ const HomePage = () => {
     const navigate = useNavigate();
     const [classrooms, setClassrooms] = useState([]);
     const {userData} = useUser();
-    // console.log(userData);
+    console.log(userData);
   
     useEffect(() => {
         const fetchClassrooms = async () => {
