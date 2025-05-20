@@ -68,7 +68,7 @@ const classRoomPage = () => {
             <Navbar />
             <ul>
                 {assignments.map(assignments => (
-                    <li key={assignments.id}>
+                    <li key={assignments.ass_id}>
                         <Link to={`/assignment/${assignments.ass_id}`}>{assignments.name}</Link>
                     </li>
                 ))}

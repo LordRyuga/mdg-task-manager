@@ -9,7 +9,7 @@ routerUsers = DefaultRouter()
 routerUsers.register(r'users', UserViewSet, basename='user')
 
 routerAssignments = DefaultRouter()
-routerAssignments.register(r'', AssignmentViewSet, basename='user')
+routerAssignments.register(r'', AssignmentViewSet, basename='assignment')
 
 routerClassrooms = DefaultRouter()
 routerClassrooms.register(r'', ClassroomsViewSet, basename='classrooms')
