@@ -6,6 +6,7 @@ import Login from './features/auth/login'
 import Register from './features/auth/register'
 import ProfilePage from './features/profile/profilePage'
 import HomePage from './features/profile/HomePage'
+import AssignmentCalendarPage from './features/assignments/assignmentCalendar'
 import ClassroomPage from './features/classroooms/classroom'
 import { UserContextProvider } from './features/profile/userContext'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -51,6 +52,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/classroom/:class_id" element={<ClassroomPage />} />
+              <Route path="/calendar" element={<AssignmentCalendarPage />} />
             </Routes>
           </div>
         </Router>

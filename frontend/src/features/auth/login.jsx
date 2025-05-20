@@ -7,7 +7,7 @@ import LoginPage, { Username, Password, Submit, Title, Logo, Reset, Footer } fro
 import LoginLogo from 'react-login-page/logo';
 
 
-const styles = { height: 500, width: 400 };
+const styles = {height: 500, width: 400, marginLeft: '25rem'};
 
 const login = () => {
 

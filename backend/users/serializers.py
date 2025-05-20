@@ -48,4 +48,11 @@ class AssignmentsSerializer(serializers.ModelSerializer):
 class SubmissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Submission
-        fields = ['user', 'assignment', 'marks', 'submitted_url']        
+        fields = ['user', 'assignment', 'marks', 'submitted_url']       
+
+class AssignmentCalendarSerializer(serializers.ModelSerializer):
+    class_name = serializers.CharField(source='class_id.name', read_only=True)
+
+    class Meta:
+        model = Assignments
+        fields = ['ass_id', 'name', 'dueDate', 'class_name']
