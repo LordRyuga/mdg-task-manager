@@ -12,7 +12,7 @@ class UserViewSet(viewsets.GenericViewSet):
 
     @action(detail=False, methods=['post'])
     def register(self, request):
-        print(request.data)
+        # print(request.data)
         serializer = userRegisterationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -125,16 +125,16 @@ class AssignmentViewSet(viewsets.GenericViewSet):
         if user.isStudent:
             return Response({"error": "Only teachers can create assignments"}, status=status.HTTP_403_FORBIDDEN)
     
-        print(request.data)
+        # print(request.data)
         classroom_id = request.data.get('class_id')
-        print(classroom_id)
+        # print(classroom_id)
         serializer = AssignmentsSerializer(data=request.data)
         if serializer.is_valid():
             assignment = serializer.save()
             assignment.users.add(user)
             return Response(AssignmentsSerializer(assignment).data, status=status.HTTP_201_CREATED)
         
-        print(serializer.errors)
+        # print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 class ClassroomsViewSet(viewsets.GenericViewSet):
@@ -148,6 +148,7 @@ class ClassroomsViewSet(viewsets.GenericViewSet):
             classrooms = user.classrooms.all()
         else:
             classrooms = user.classrooms.all()
+        # print(classrooms)
         serializer = ClassroomsSerializer(classrooms, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -170,6 +171,8 @@ class ClassroomsViewSet(viewsets.GenericViewSet):
     @action(detail=False, methods=['post'])
     def createClassroom(self, request):
         user = request.user
+        print(request)
+        print(request.data)
         # print(user)
         # print(user.isStudent)
         if user.isStudent:
@@ -178,7 +181,7 @@ class ClassroomsViewSet(viewsets.GenericViewSet):
         classroom_name = request.data.get('classroom_name')
         # print(classroom_name)
         
-        classroom = Classrooms.objects.create(name=classroom_name)
+        classroom = Classrooms.objects.create(name=classroom_name, description=request.data.get('description'))
         classroom.users.add(user)
         classroom.save()
 
@@ -204,7 +207,7 @@ class ClassroomsViewSet(viewsets.GenericViewSet):
     def getAllAssignments(self, request):
         user = request.user
         classroom_id = int(request.query_params.get('class_id'))
-        print(classroom_id)
+        # print(classroom_id)
         if not classroom_id:
             return Response({"error": "class_id is required"}, status=status.HTTP_400_BAD_REQUEST)
         try:
@@ -213,9 +216,9 @@ class ClassroomsViewSet(viewsets.GenericViewSet):
             return Response({"error": "Classroom not found"}, status=status.HTTP_404_NOT_FOUND)
         
         assignments = classroom.assignments.all()
-        print(assignments)
+        # print(assignments)
         serializer = AssignmentsSerializer(assignments, many=True)
-        print(serializer.data)
+        # print(serializer.data)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 

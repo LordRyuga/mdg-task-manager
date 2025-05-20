@@ -1,9 +1,11 @@
-import React, {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
-import {useNavigate} from "react-router-dom";
+import React, { use, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from '../../assets/navbar.jsx';
 import { useUser } from "./userContext.jsx";
+import Card from '../../assets/Card.jsx';
+
 
 
 const HomePage = () => {
@@ -11,13 +13,12 @@ const HomePage = () => {
     //fetching all classrooms from the backend
     const navigate = useNavigate();
     const [classrooms, setClassrooms] = useState([]);
-    const {userData} = useUser();
-    console.log(userData);
-  
+    const { userData } = useUser();
+
     useEffect(() => {
         const fetchClassrooms = async () => {
             try {
-                const response = await axios.get('/api/classrooms/getAllClassrooms/');
+                const response = await axios.get('/api/classrooms/getAllClassrooms/', { withCredentials: true });
                 console.log(response.data);
                 setClassrooms(response.data);
             } catch (error) {
@@ -37,6 +38,7 @@ const HomePage = () => {
     //creating a form which has classroom_name for creating a classroom
     const [createClassForm, setForm1] = useState({
         classroom_name: "",
+        description: "",
     });
 
     //handling the change in both the forms and submitting both the forms
@@ -55,7 +57,7 @@ const HomePage = () => {
     const handleSubmitJoin = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post("http://localhost:5173/api/classrooms/joinClassroom/", joinClassForm, {withCredentials: true});
+            const response = await axios.post("http://localhost:5173/api/classrooms/joinClassroom/", joinClassForm, { withCredentials: true });
             // console.log(response.data);
             navigate("/profile");
         } catch (error) {
@@ -65,7 +67,7 @@ const HomePage = () => {
     const handleSubmitCreate = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post("http://localhost:5173/api/classrooms/createClassroom/", createClassForm, {withCredentials: true});
+            const response = await axios.post("http://localhost:5173/api/classrooms/createClassroom/", createClassForm, { withCredentials: true });
             // console.log(response.data);
             navigate("/profile");
         } catch (error) {
@@ -73,28 +75,46 @@ const HomePage = () => {
         }
     }
 
-    
-    return(
-        <div className="home-container">
-            <Navbar/>
-            <h2>Home Page</h2>
-            <form onSubmit={handleSubmitJoin}>
-                <input type="text" name="class_id" placeholder="Classroom ID" value={joinClassForm.class_id} onChange={handleChangeJoin} required />
-                <button type="submit">Join Classroom</button>
-            </form>
-            {userData && !userData.isStudent && (
-                <form onSubmit={handleSubmitCreate}>
-                    <input type="text" name="classroom_name" placeholder="Classroom Name" value={createClassForm.classroom_name} onChange={handleChangeCreate} required />
-                    <button type="submit">Create Classroom</button>
+    if (userData === null) {
+        return (
+            <div className="home-container">
+                <Navbar />
+                <h2>Please Login to access this page</h2>
+                <Link to="/login">Login</Link>
+                <br></br>
+                <Link to="/register">Register</Link>
+            </div>
+        )
+    }
+
+    return (
+        <div className="home-container" style={ { marginRight: '5%', padding: 0, marginTop: '8rem'}}>
+            <Navbar />
+            <div className="goodLooksBro" style={ { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', marginRight: '5rem', marginLeft: '7rem' } }>
+                <h2>Home Page</h2>
+                <form onSubmit={handleSubmitJoin}>
+                    <input type="text" name="class_id" placeholder="Classroom ID" value={joinClassForm.class_id} onChange={handleChangeJoin} required />
+                    <br></br>
+                    <button type="submit">Join Classroom</button>
                 </form>
-            )}
-            <ul>
-              {classrooms.map(classroom => (
-                <li key={classroom.class_id}>
-                  <Link to={`/classroom/${classroom.class_id}`}>{classroom.name}</Link>
-                </li>
-              ))}
-            </ul>
+                {userData && !userData.isStudent && (
+                    <form onSubmit={handleSubmitCreate}>
+                        <input type="text" name="classroom_name" placeholder="Classroom Name" value={createClassForm.classroom_name} onChange={handleChangeCreate} required />
+                        <br></br>
+                        <input type="text" name="description" placeholder="Description" value={createClassForm.description} onChange={handleChangeCreate} />
+                        <br></br>
+                        <button type="submit">Create Classroom</button>
+                    </form>
+                )}
+
+            </div>
+            <div className="classroomCards" style={ { display: 'flex', flexWrap: 'wrap', justifyContent: 'center' } }>
+                {classrooms.map(classroom => (
+                    <span className="classroomCard" style={ { display: 'flex', justifyContent: 'center', margin: '1em' } } key={classroom.class_id}>
+                        <Card name={classroom.name} description={classroom.description} class_id={classroom.class_id} />
+                    </span>
+                ))}
+            </div>
         </div>
     )
 }
