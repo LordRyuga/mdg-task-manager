@@ -3,8 +3,8 @@ from rest_framework import status, views, permissions, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from .serializers import userRegisterationSerializer
-from .serializers import ClassroomsSerializer, AssignmentsSerializer, AssignmentCalendarSerializer
-from .models import CustomUser, Classrooms, Assignments
+from .serializers import ClassroomsSerializer, AssignmentsSerializer, SubmissionSerializer,SubmissionStatusSerializer, AssignmentCalendarSerializer
+from .models import CustomUser, Classrooms, Assignments, Submission
 
 class UserViewSet(viewsets.GenericViewSet):
 
@@ -37,13 +37,95 @@ class AssignmentViewSet(viewsets.GenericViewSet):
 
     permission_classes = [permissions.IsAuthenticated]
     
+    @action(detail=False, methods=['get'])
+    def getAssignmentById(self, request):
+        ass_id = request.query_params.get('ass_id')
+        try:
+            assignment = Assignments.objects.get(ass_id=ass_id)
+        except Assignments.DoesNotExist:
+            return Response({"error": "Assignment not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = AssignmentsSerializer(assignment)
+        return Response(serializer.data, status = status.HTTP_200_OK)   
+     
+    
     @action(detail=False, methods=['post'])
-    def submitAssignment(self, request):
-        assId = request.data.get('assId')
-        submitUrl = request.data.get('submitUrl')
-        return Response(status=status.HTTP_200_OK)
+    def submit(self, request):
+         print(request.data)
+         ass_id = request.data.get('ass_id')
+         submitted_url = request.data.get('submitted_url')
+         print(ass_id)
+
+         try:
+             assignment = Assignments.objects.get(ass_id=ass_id)
+    
+         except Assignments.DoesNotExist:
+             return Response({"error": "Assignment not found"}, status=status.HTTP_404_NOT_FOUND)
+         
+         submission, created = Submission.objects.get_or_create(
+         assignment=assignment,
+         user=request.user,
+         defaults={'submitted_url': submitted_url}
+         )
+         if not created:
+             submission.submitted_url = submitted_url
+             submission.save()
+             serializer = SubmissionSerializer(submission)
+             return Response(serializer.data, status=status.HTTP_200_OK)
+         
+         else:
+             serializer = SubmissionSerializer(submission)
+             return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    
+    @action(detail=False, methods=['get'])
+    def submissionStatus(self, request):
+        ass_id = request.query_params.get('ass_id')
+        
+        try:
+            assignment = Assignments.objects.get(ass_id=ass_id)
+        except:
+            return Response({"error": "Assignment not found"}, status=status.HTTP_404_NOT_FOUND)    
+        
+        submissions = assignment.submissions.all()
+        serializer = SubmissionStatusSerializer(submissions, many = True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
     
+    @action(detail=False, methods=['get'])
+    def submission(self, request):
+        ass_id = request.query_params.get('ass_id')
+        print(request.data)
+        try:
+            submission = Submission.objects.get(assignment__ass_id=ass_id, user=request.user)
+            serializer = SubmissionSerializer(submission)
+            return Response(serializer.data, status = status.HTTP_200_OK)
+        except Submission.DoesNotExist:
+            return Response({'error': 'Submission not found.'}, status=status.HTTP_404_NOT_FOUND)
+        
+        
+    @action(detail=False, methods=['post'])
+    def submitMarks(self, request) :
+        ass_id = request.data.get('ass_id')
+        user = request.data.get('user')
+        marks = request.data.get('marks')
+        
+        if not all([ass_id, user, marks]):
+            return Response({'error': 'ass_id, user, and marks are required.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            submission = Submission.objects.get(assignment__ass_id=ass_id, user=user)
+            submission.marks = marks
+            submission.save()
+            serializer = SubmissionSerializer(submission)
+            
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        except Submission.DoesNotExist:
+            return Response({'error': 'submission for the student not found'}, status=status.HTTP_404_NOT_FOUND)
+    
+
+
     @action(detail=False, methods=['post'])
     def createAssignment(self, request):
         user = request.user
