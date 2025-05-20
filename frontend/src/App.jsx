@@ -9,6 +9,7 @@ import HomePage from './features/profile/HomePage'
 import AssignmentCalendarPage from './features/assignments/assignmentCalendar'
 import ClassroomPage from './features/classroooms/classroom'
 import { UserContextProvider } from './features/profile/userContext'
+import { UserClassroomContextProvider } from './features/profile/userClassroomsContext'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { green } from '@mui/material/colors';
@@ -43,18 +44,20 @@ function App() {
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <UserContextProvider>
-        <Router>
-          <div className="App">
-            <Routes>
-              <Route path='/home' element={<HomePage />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/classroom/:class_id" element={<ClassroomPage />} />
-              <Route path="/calendar" element={<AssignmentCalendarPage />} />
-            </Routes>
-          </div>
-        </Router>
+        <UserClassroomContextProvider>
+          <Router>
+            <div className="App">
+              <Routes>
+                <Route path='/home' element={<HomePage />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/classroom/:class_id" element={<ClassroomPage />} />
+                <Route path="/calendar" element={<AssignmentCalendarPage />} />
+              </Routes>
+            </div>
+          </Router>
+        </UserClassroomContextProvider>
       </UserContextProvider>
     </ThemeProvider>
   )

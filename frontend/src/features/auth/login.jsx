@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import { useUser } from "../profile/userContext";
+import { useUserClassroom } from "../profile/userClassroomsContext";
 import Navbar from '../../assets/navbar.jsx';
 import LoginPage, { Username, Password, Submit, Title, Logo, Reset, Footer } from '@react-login-page/base';
 import LoginLogo from 'react-login-page/logo';
@@ -13,6 +14,7 @@ const login = () => {
 
     const navigate = useNavigate();
     const { setUserData } = useUser();
+    const { fetchUserClassrooms } = useUserClassroom();
 
     const [form, setForm] = useState({
             username: "",
@@ -36,6 +38,7 @@ const login = () => {
 
             const response2 = await axios.get("http://localhost:5173/api/auth/users/get_user/", { withCredentials: true });
             await setUserData(response2.data);
+            await fetchUserClassrooms();
             navigate("/profile");
         } catch (error) {
             console.error("Error logging in user:", error);

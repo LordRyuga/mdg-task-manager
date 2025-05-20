@@ -5,11 +5,13 @@ import axios from 'axios';
 import ColoredLine from './coloredLine';
 import Hamburger from 'hamburger-react';
 import Avatar from '@mui/material/Avatar';
+import { useUserClassroom } from "../features/profile/userClassroomsContext";
 import { Navigate, useNavigate } from 'react-router-dom';
 
 
 const Navbar = () => {
 
+  const { userClassrooms } = useUserClassroom();
   const navigate = useNavigate();
 
   const [classrooms, setClassrooms] = useState([]);
@@ -17,13 +19,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const fetchClassrooms = async () => {
-      try {
-        const response = await axios.get('/api/classrooms/getAllClassrooms/');
-        // console.log(response.data);
-        setClassrooms(response.data);
-      } catch (error) {
-        console.error('Error fetching classrooms:', error);
-      }
+      setClassrooms(userClassrooms);
     };
 
     fetchClassrooms();
@@ -92,7 +88,7 @@ const Navbar = () => {
               Home
             </MenuItem>
             <SubMenu label="Classrooms">
-              {classrooms.map(classroom => (
+              {classrooms && classrooms.map(classroom => (
                 <MenuItem
                   key={classroom.class_id}
                   component={<Link to={`/classroom/${classroom.class_id}`} />}

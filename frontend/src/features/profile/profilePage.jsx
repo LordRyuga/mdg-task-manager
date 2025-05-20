@@ -3,31 +3,14 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from '../../assets/navbar.jsx';
 import { Link } from "react-router-dom";
+import Avatar from '@mui/material/Avatar';
+import { useUser } from "./userContext.jsx";
 
 const profilePage = () => {
 
     const navigate = useNavigate();
 
-    const [userData, setUserData] = useState({
-        username: "",
-        email: "",
-        firstName: "",
-        lastName: "",
-        isStudent: true,
-    });
-
-    useEffect(() => {
-        const fetchUserData = async () => {
-            try {
-                const response = await axios.get("http://localhost:5173/api/auth/users/get_user/", { withCredentials: true });
-                setUserData(response.data);
-                console.log(response.data);
-            } catch (error) {
-                console.error("Error fetching user data:", error);
-            }
-        };
-        fetchUserData();
-    }, []);
+    const { userData } = useUser();
 
     const handleLogout = () => {
         document.cookie.split(";").forEach((cookie) => {
@@ -40,7 +23,7 @@ const profilePage = () => {
 
     console.log(userData);
 
-    if (userData.username === '') {
+    if (userData === null || userData.username === '') {
         return (
             <div className="home-container">
                 <Navbar />
@@ -55,12 +38,19 @@ const profilePage = () => {
     return (
         <div className="profile-container">
             <Navbar />
-            <h2>User Profile</h2>
-            <p><strong>Username:</strong> {userData.username}</p>
-            <p><strong>Email:</strong> {userData.email}</p>
-            <p><strong>First Name:</strong> {userData.firstName}</p>
-            <p><strong>Last Name:</strong> {userData.lastName}</p>
-            <button onClick={handleLogout}>Logout</button>
+            <div style={{ marginLeft: '33.5rem', marginTop: '0.25em', zIndex: 100 }}>
+                <Avatar
+                    sx={{ width: 100, height: 100 }}
+                />
+            </div>
+            <div className="welcome-back" style={{ marginTop: '2rem', marginLeft: '25rem' }}>
+                <h2>Welcome back, <strong>{userData.username}</strong></h2>
+                <h3>Your Profile</h3>
+                <p style={{fontSize: '1.5rem'}}><strong>Email:</strong> {userData.email}</p>
+                <p style={{fontSize: '1.5rem'}}><strong>First Name:</strong> {userData.firstName}</p>
+                <p style={{fontSize: '1.5rem'}}><strong>Last Name:</strong> {userData.lastName}</p>
+                <button onClick={handleLogout}>Logout</button>
+            </div>
         </div>
     )
 }

@@ -61,7 +61,7 @@ const classRoomPage = () => {
         };
 
         fetchAssignments();
-    }, []);
+    }, [classId]);
 
     return (
         <div className="assignmentPage">
