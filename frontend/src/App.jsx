@@ -56,6 +56,7 @@ function App() {
                 <Route path="/classroom/:class_id" element={<ClassroomPage />} />
                 <Route path="assignment/:ass_id" element={<AssignmentPage />} />
                 <Route path="/calendar" element={<AssignmentCalendarPage />} />
+                <Route path='/' element={<Login />} />
               </Routes>
             </div>
           </Router>

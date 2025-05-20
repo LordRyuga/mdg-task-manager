@@ -12,7 +12,7 @@ import Login, { Input } from '@react-login-page/base';
 
 const HomePage = () => {
 
-    //fetching all classrooms from the backend
+
     const navigate = useNavigate();
     const [classrooms, setClassrooms] = useState([]);
     const { userData } = useUser();
@@ -26,19 +26,16 @@ const HomePage = () => {
         fetchClassrooms();
     }, [userData, userClassrooms]);
 
-
-
-    // creating a form which has classroom_id for joining a classroom
     const [joinClassForm, setForm] = useState({
         class_id: "",
     });
-    //creating a form which has classroom_name for creating a classroom
+
     const [createClassForm, setForm1] = useState({
         classroom_name: "",
         description: "",
     });
 
-    //handling the change in both the forms and submitting both the forms
+
     const handleChangeJoin = (e) => {
         setForm({
             ...joinClassForm,
@@ -73,6 +70,7 @@ const HomePage = () => {
             console.error("Error creating classroom:", error);
         }
     }
+    
 
     if (userData === null) {
         return (
@@ -93,17 +91,19 @@ const HomePage = () => {
                 <h2>Welcome back <strong>{userData.firstName} {userData.lastName}!</strong></h2>
 
                 <form onSubmit={handleSubmitJoin}>
-                    <input type="text" name="class_id" placeholder="Classroom ID" value={joinClassForm.class_id} onChange={handleChangeJoin} required />
+                    <input type="text" name="class_id" placeholder="Classroom ID" value={joinClassForm.class_id} onChange={handleChangeJoin} required style={{ border: '1px solid #41414f', padding: '8px', backgroundColor: '#41414f' }}/>
+                    <br></br>
                     <br></br>
                     <button type="submit">Join Classroom</button>
                 </form>
                 {userData && !userData.isStudent && (
                     <form onSubmit={handleSubmitCreate}>
-                        <input type="text" name="classroom_name" placeholder="Classroom Name" value={createClassForm.classroom_name} onChange={handleChangeCreate} required />
+                        <input type="text" name="classroom_name" placeholder="Classroom Name" value={createClassForm.classroom_name} onChange={handleChangeCreate} required style={{ border: '1px solid #41414f', padding: '8px', backgroundColor: '#41414f' }}/>
                         <br></br>
-                        <input type="text" name="description" placeholder="Description" value={createClassForm.description} onChange={handleChangeCreate} />
                         <br></br>
-
+                        <input type="text" name="description" placeholder="Description" value={createClassForm.description} onChange={handleChangeCreate} style={{ border: '1px solid #41414f', padding: '8px', backgroundColor: '#41414f' }}/>
+                        <br></br>
+                        <br></br>
                         <button type="submit">Create Classroom</button>
                     </form>
                 )}

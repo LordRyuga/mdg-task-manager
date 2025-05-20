@@ -7,9 +7,12 @@ import Hamburger from 'hamburger-react';
 import Avatar from '@mui/material/Avatar';
 import { useUserClassroom } from "../features/profile/userClassroomsContext";
 import { Navigate, useNavigate } from 'react-router-dom';
+import { useUser } from "../features/profile/userContext";
 
 
 const Navbar = () => {
+
+  const { userData } = useUser();
 
   const { userClassrooms } = useUserClassroom();
   const navigate = useNavigate();
@@ -23,7 +26,7 @@ const Navbar = () => {
     };
 
     fetchClassrooms();
-  }, []);
+  }, [userData, userClassrooms]);
 
 
   return (
@@ -34,6 +37,9 @@ const Navbar = () => {
         </div>
         <div className='HaburgerIcon' style={{ marginLeft: '1em', marginTop: '0em', marginBottom: '0.5em', zIndex: 10, position: 'fixed' }}>
           <Hamburger toggled={isOpen} toggle={setOpen} />
+        </div>
+        <div className='logo' style={{ marginLeft: '5rem', marginTop: '-5rem', zIndex: 20, position: 'absolute', fontSize: '2rem' }}>
+          <p> TMpro </p>
         </div>
         <div className="coloredLine" style={{ position: 'absolute', top: '0', left: '0', width: '100%', height: '100%', zIndex: 5, marginTop: '-1rem' }}>
           <ColoredLine color="#1e1e2f" />

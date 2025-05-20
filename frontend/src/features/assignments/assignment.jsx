@@ -75,7 +75,7 @@ const AssignmentPage = () => {
     return (
         <div className="assignmentClass">
             <Navbar />
-            <div style={{ padding: "2rem" }}>
+            <div style={{ padding: "2rem", marginLeft: "15rem" }}>
                 {assignment && (
                     <>
                         <h1>{assignment.name}</h1>
@@ -86,7 +86,7 @@ const AssignmentPage = () => {
                 )}
 
                 {userData && userData.isStudent ? (
-                    <form onSubmit={handleSubmit} style={{ marginTop: "2rem" }}>
+                    <form onSubmit={handleSubmit} style={{ marginTop: "2rem"}}>
                         <label>Submission URL:</label><br />
                         <input
                             type="url"
@@ -101,7 +101,7 @@ const AssignmentPage = () => {
                         )}
                     </form>
                 ) : (
-                    <div style={{ marginTop: "2rem" }}>
+                    <div style={{ marginTop: "2rem"}}>
                         <h2>All Students</h2>
                         <table border="1" cellPadding="8" style={{ borderCollapse: "collapse", width: "100%" }}>
                             <thead>
@@ -135,6 +135,7 @@ const AssignmentPage = () => {
                                                             ...marksMap,
                                                             [sub.student_id]: e.target.value
                                                         })}
+                                                        style={{border: '1px solid #41414f', padding: '8px', backgroundColor: '#41414f'}}
                                                     />
                                                     <button onClick={() => submitMarks(sub.student_id)}>Submit</button>
                                                 </>
