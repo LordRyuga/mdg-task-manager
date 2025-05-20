@@ -7,9 +7,11 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { UserClassroomContextProvider } from '../features/profile/userClassroomsContext';
 
 export default function BasicCard({ name, description, class_id }) {
     const navigate = useNavigate();
+    const { fetchUserClassrooms } = useUserClassroom();
 
     const handleClick = () => {
         navigate(`/classroom/${class_id}`);
@@ -23,6 +25,7 @@ export default function BasicCard({ name, description, class_id }) {
                 { withCredentials: true }
             );
             alert("You left the classroom");
+            fetchUserClassrooms;
             
         } catch (error) {
             console.error("Failed to leave the classroom", error);
