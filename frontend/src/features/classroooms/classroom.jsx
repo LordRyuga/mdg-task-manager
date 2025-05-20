@@ -64,29 +64,41 @@ const classRoomPage = () => {
     }, [classId]);
 
     return (
-    <div className="assignmentPage">
-        <Navbar />
-        <div className="assignment-cards-container" style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', padding: '16px' }}>
-            {assignments.map(assignment => (
-                <AssignmentCard
-                    key={assignment.ass_id}
-                    ass_id={assignment.ass_id}
-                    name={assignment.name}
-                    description={assignment.instructions}
-                    total_Marks={assignment.total_Marks}
-                    dueDate={assignment.dueDate}
-                />
-            ))}
-        </div>
-        
-        {userData && !userData.isStudent && (
-            <div className="create-Ass">
-                <form onSubmit={handleSubmit}>
-                </form>
+        <div className="assignmentPage">
+            <Navbar />
+            <div className="assignment-cards-container" style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', padding: '16px' }}>
+                {assignments.map(assignment => (
+                    <AssignmentCard
+                        key={assignment.ass_id}
+                        ass_id={assignment.ass_id}
+                        name={assignment.name}
+                        description={assignment.instructions}
+                        total_Marks={assignment.total_Marks}
+                        dueDate={assignment.dueDate}
+                    />
+                ))}
             </div>
-        )}
-    </div>
-);
+
+            {userData && !userData.isStudent && (
+                <div className="create-Ass">
+                    <form onSubmit={handleSubmit}>
+                        {/* make input fields corresponding to the createAssignmentForm */}
+
+                        <input type="text" name="name" placeholder="Classroom Name" value={createAssignmentForm.name} onChange={handleChange} required />
+                        <br></br>
+                        <input type="text" name="total_Marks" placeholder="Total Marks" value={createAssignmentForm.total_Marks} onChange={handleChange} />
+                        <br></br>
+                        <input type="text" name="descriptionUrl" placeholder="URL to assignment pdf" value={createAssignmentForm.descriptionUrl} onChange={handleChange} />
+                        <br></br>
+                        <textarea name="instructions" placeholder="Instructions to assignment" value={createAssignmentForm.instructions} onChange={handleChange} />
+                        <br></br>
+                        <input type="date" name="dueDate" placeholder="Total Marks" value={createAssignmentForm.dueDate} onChange={handleChange} />
+                        <button type="submit">Create Assignment</button>
+                    </form>
+                </div>
+            )}
+        </div>
+    );
 
 
 
