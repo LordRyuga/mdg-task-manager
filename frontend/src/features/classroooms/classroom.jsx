@@ -25,7 +25,15 @@ const classRoomPage = () => {
         }
     )
 
-
+    const fetchAllAssignments = async () => {
+            try {
+                const response = await axios.get('/api/classrooms/getAllAssignments', { params: { class_id: classId } }, { withCredentials: true });
+                setAssignments(response.data);
+                console.log(response.data);
+            } catch (error) {
+                console.error('Error fetching assignments', error);
+            }
+        };
 
     const handleChange = (e) => {
         setForm({
@@ -43,7 +51,7 @@ const classRoomPage = () => {
                 total_Marks: parseInt(createAssignmentForm.total_Marks),
             };
             const response = await axios.post("http://localhost:5173/api/assignment/createAssignment/", dataToSend, { withCredentials: true });
-
+            fetchAllAssignments();
         } catch (error) {
             console.error("Error creating assignment", error);
         }
@@ -66,6 +74,99 @@ const classRoomPage = () => {
     return (
         <div className="assignmentPage">
             <Navbar />
+            <div className="classroom-header" style={{ alignItems: 'center', marginTop: '7rem' }}>
+                <h2>Hello {userData.firstName} {userData.lastName}</h2>
+                <h2>Classroom ID: {classId}</h2>
+            </div>
+            {userData && !userData.isStudent && (
+                <div className="create-Ass">
+                    <form onSubmit={handleSubmit}>
+                        {/* First Row: Three Inputs Side-by-Side */}
+                        <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem' }}>
+                            <input
+                                type="text"
+                                name="name"
+                                placeholder="Assignment Name"
+                                value={createAssignmentForm.name}
+                                onChange={handleChange}
+                                required
+                                style={{
+                                    flex: 1,
+                                    border: '0.1rem solid #41414f',
+                                    padding: '0.5rem',
+                                    backgroundColor: '#41414f',
+                                }}
+                            />
+                            <input
+                                type="text"
+                                name="total_Marks"
+                                placeholder="Total Marks"
+                                value={createAssignmentForm.total_Marks}
+                                onChange={handleChange}
+                                required
+                                style={{
+                                    flex: 1,
+                                    border: '0.1rem solid #41414f',
+                                    padding: '0.5rem',
+                                    backgroundColor: '#41414f',
+                                }}
+                            />
+                            <input
+                                type="text"
+                                name="descriptionUrl"
+                                placeholder="URL to assignment pdf"
+                                value={createAssignmentForm.descriptionUrl}
+                                onChange={handleChange}
+                                required
+                                style={{
+                                    flex: 1,
+                                    border: '0.1rem solid #41414f',
+                                    padding: '0.5rem',
+                                    backgroundColor: '#41414f',
+                                }}
+                            />
+                        </div>
+                        <div style={{ marginBottom: '1.5rem' }}>
+                            <textarea
+                                name="instructions"
+                                placeholder="Instructions to assignment"
+                                value={createAssignmentForm.instructions}
+                                onChange={handleChange}
+                                required
+                                style={{
+                                    width: '75rem',
+                                    height: '10rem',
+                                    border: '0.1rem solid #41414f',
+                                    padding: '0.75rem',
+                                    backgroundColor: '#41414f',
+                                }}
+                            />
+                        </div>
+
+                        {/* Date Picker */}
+                        <div style={{ marginBottom: '1.5rem' }}>
+                            <input
+                                type="date"
+                                name="dueDate"
+                                value={createAssignmentForm.dueDate}
+                                onChange={handleChange}
+                                required
+                                style={{
+                                    width: '100%',
+                                    border: '0.1rem solid #41414f',
+                                    padding: '0.5rem',
+                                    backgroundColor: '#41414f',
+                                }}
+                            />
+                        </div>
+
+                        {/* Submit Button */}
+                        <button type="submit" style={{ padding: '0.6rem 1.2rem' }}>Create Assignment</button>
+                    </form>
+                </div>
+
+            )}
+            <h2 style={{ marginTop: '2rem', marginLeft: '5rem' }}>Assignments</h2>
             <div className="assignment-cards-container" style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', padding: '16px' }}>
                 {assignments.map(assignment => (
                     <AssignmentCard
@@ -79,24 +180,6 @@ const classRoomPage = () => {
                 ))}
             </div>
 
-            {userData && !userData.isStudent && (
-                <div className="create-Ass">
-                    <form onSubmit={handleSubmit}>
-                        {/* make input fields corresponding to the createAssignmentForm */}
-
-                        <input type="text" name="name" placeholder="Classroom Name" value={createAssignmentForm.name} onChange={handleChange} required />
-                        <br></br>
-                        <input type="text" name="total_Marks" placeholder="Total Marks" value={createAssignmentForm.total_Marks} onChange={handleChange} />
-                        <br></br>
-                        <input type="text" name="descriptionUrl" placeholder="URL to assignment pdf" value={createAssignmentForm.descriptionUrl} onChange={handleChange} />
-                        <br></br>
-                        <textarea name="instructions" placeholder="Instructions to assignment" value={createAssignmentForm.instructions} onChange={handleChange} />
-                        <br></br>
-                        <input type="date" name="dueDate" placeholder="Total Marks" value={createAssignmentForm.dueDate} onChange={handleChange} />
-                        <button type="submit">Create Assignment</button>
-                    </form>
-                </div>
-            )}
         </div>
     );
 
