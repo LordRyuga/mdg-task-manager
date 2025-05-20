@@ -33,7 +33,6 @@ const AssignmentPage = () => {
                     });
                     setSubmissions(response.data);
                 } else if(userData){
-
                     const response = await axios.get('http://localhost:5173/api/assignment/submission/', {
                         params: { ass_id: assId },
                         withCredentials: true,

@@ -4,7 +4,7 @@ import axios from "axios";
 import Navbar from '../../assets/navbar.jsx';
 import { useUser } from "../profile/userContext.jsx";
 import { useParams } from "react-router-dom";
-
+import AssignmentCard from "../../assets/assignmentCard.jsx";
 
 const classRoomPage = () => {
 
@@ -64,63 +64,30 @@ const classRoomPage = () => {
     }, []);
 
     return (
-        <div className="assignmentPage">
-            <Navbar />
-            <ul>
-                {assignments.map(assignments => (
-                    <li key={assignments.ass_id}>
-                        <Link to={`/assignment/${assignments.ass_id}`}>{assignments.name}</Link>
-                    </li>
-                ))}
-            </ul>
-            {userData && !(userData.isStudent) && (
-                <div className="create-Ass">
-                    <form onSubmit={handleSubmit}>
-                        <input
-                            type="text"
-                            name="name"
-                            placeholder="Assignment Name"
-                            value={createAssignmentForm.name}
-                            onChange={handleChange}
-                            required
-                        />
-                        <input
-                            type="text"
-                            name="total_Marks"
-                            placeholder="Total Marks"
-                            value={createAssignmentForm.total_Marks}
-                            onChange={handleChange}
-                            required
-                        />
-                        <input
-                            type="url"
-                            name="descriptionUrl"
-                            placeholder="Url to assignment pdf"
-                            value={createAssignmentForm.descriptionUrl}
-                            onChange={handleChange}
-                        />
-                        <textarea
-                            name="instructions"
-                            placeholder="Instructions of assignment"
-                            value={createAssignmentForm.instructions}
-                            onChange={handleChange}
-                            required
-                        />
-                        <input
-                            type="datetime-local"
-                            name="dueDate"
-                            // also want to convert date to iso so that backend can parse it
-                            value={createAssignmentForm.dueDate}
-                            onChange={handleChange}
-                            required
-                        />
-
-                        <button type="submit">Create Assignment</button>
-                    </form>
-                </div>
-            )}
+    <div className="assignmentPage">
+        <Navbar />
+        <div className="assignment-cards-container" style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', padding: '16px' }}>
+            {assignments.map(assignment => (
+                <AssignmentCard
+                    key={assignment.ass_id}
+                    ass_id={assignment.ass_id}
+                    name={assignment.name}
+                    description={assignment.instructions}
+                    total_Marks={assignment.total_Marks}
+                    dueDate={assignment.dueDate}
+                />
+            ))}
         </div>
-    )
+        
+        {userData && !userData.isStudent && (
+            <div className="create-Ass">
+                <form onSubmit={handleSubmit}>
+                </form>
+            </div>
+        )}
+    </div>
+);
+
 
 
 
