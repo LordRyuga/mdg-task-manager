@@ -11,10 +11,9 @@ const AssignmentPage = () => {
     const [studentMarks, setStudentMarks] = useState(null);
     const [submissions, setSubmissions] = useState([]);
     const [marksMap, setMarksMap] = useState({});
-    
-    
+
     const { userData } = useUser();
-    console.log(userData)
+    // console.log(userData)
     
     useEffect(() => {
         const fetchData = async () => {
@@ -23,8 +22,9 @@ const AssignmentPage = () => {
                     params: { ass_id: assId },
                     withCredentials: true,
                 });
+                // console.log(response.data)
                 setAssignment(response.data);
-
+                
                 if (userData && !userData.isStudent) {
                     
                     const response = await axios.get('http://localhost:5173/api/assignment/submissionStatus/', {
@@ -32,7 +32,7 @@ const AssignmentPage = () => {
                         withCredentials: true,
                     });
                     setSubmissions(response.data);
-                } else if(userData){
+                } else if (userData) {
                     const response = await axios.get('http://localhost:5173/api/assignment/submission/', {
                         params: { ass_id: assId },
                         withCredentials: true,
@@ -47,12 +47,48 @@ const AssignmentPage = () => {
         fetchData();
     }, [assId, userData]);
 
+    const [deadLine, setDeadline] = useState(new Date());
+    
+    useEffect(() => {
+        if(assignment != null)
+        {
+            setDeadline(new Date(assignment.dueDate));
+        }
+    }, [assignment]);
+    
+    const [currentDateTime, setCurrentDateTime] = useState(new Date());
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setCurrentDateTime(new Date());
+        }, 1000);
+
+        return () => clearInterval(intervalId);
+    }, [])
+
+    const [submitIsActive, setSubmitActive] = useState(true);
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            if (deadLine.getTime() < currentDateTime.getTime()) {
+                setSubmitActive(true);
+            }else
+            {
+                setSubmitActive(false);
+            }
+        }, 1000);
+        // console.log(deadLine.getTime(), currentDateTime.getTime());
+        // console.log (deadLine.getTime() < currentDateTime.getTime());
+        return () => clearInterval(intervalId);
+    }, [deadLine, currentDateTime]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+
             await axios.post('http://localhost:5173/api/assignment/submit/',
-                { ass_id: assId, submitted_url: studentSubmission} ,
-                {withCredentials: true }
+                { ass_id: assId, submitted_url: studentSubmission },
+                { withCredentials: true }
             );
             alert('Assignment submitted successfully');
         } catch (error) {
@@ -72,6 +108,8 @@ const AssignmentPage = () => {
         }
     };
 
+
+
     return (
         <div className="assignmentClass">
             <Navbar />
@@ -86,7 +124,7 @@ const AssignmentPage = () => {
                 )}
 
                 {userData && userData.isStudent ? (
-                    <form onSubmit={handleSubmit} style={{ marginTop: "2rem"}}>
+                    <form onSubmit={handleSubmit} style={{ marginTop: "2rem" }}>
                         <label>Submission URL:</label><br />
                         <input
                             type="url"
@@ -95,13 +133,13 @@ const AssignmentPage = () => {
                             style={{ width: "100%", padding: "0.5rem", marginBottom: "1rem" }}
                             required
                         />
-                        <button type="submit">Submit Assignment</button>
+                        <button type="submit" disabled={!submitIsActive}>Submit Assignment</button>
                         {studentMarks !== null && (
                             <p>Your Marks: {studentMarks} / {assignment?.total_Marks}</p>
                         )}
                     </form>
                 ) : (
-                    <div style={{ marginTop: "2rem"}}>
+                    <div style={{ marginTop: "2rem" }}>
                         <h2>All Students</h2>
                         <table border="1" cellPadding="8" style={{ borderCollapse: "collapse", width: "100%" }}>
                             <thead>
@@ -135,7 +173,7 @@ const AssignmentPage = () => {
                                                             ...marksMap,
                                                             [sub.student_id]: e.target.value
                                                         })}
-                                                        style={{border: '1px solid #41414f', padding: '8px', backgroundColor: '#41414f'}}
+                                                        style={{ border: '1px solid #41414f', padding: '8px', backgroundColor: '#41414f' }}
                                                     />
                                                     <button onClick={() => submitMarks(sub.student_id)}>Submit</button>
                                                 </>

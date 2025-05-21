@@ -38,17 +38,17 @@ const profilePage = () => {
     return (
         <div className="profile-container">
             <Navbar />
-            <div style={{ marginLeft: '33.5rem', marginTop: '0.25em', zIndex: 100 }}>
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0.25em', zIndex: 100 }}>
                 <Avatar
                     sx={{ width: 100, height: 100 }}
                 />
             </div>
-            <div className="welcome-back" style={{ marginTop: '2rem', marginLeft: '25rem' }}>
+            <div className="welcome-back" style={{ marginTop: '2rem', marginLeft: 'auto' }}>
                 <h2>Welcome back, <strong>{userData.username}</strong></h2>
                 <h3>Your Profile</h3>
-                <p style={{fontSize: '1.5rem'}}><strong>Email:</strong> {userData.email}</p>
-                <p style={{fontSize: '1.5rem'}}><strong>First Name:</strong> {userData.firstName}</p>
-                <p style={{fontSize: '1.5rem'}}><strong>Last Name:</strong> {userData.lastName}</p>
+                <p style={{ fontSize: '1.5rem' }}><strong>Email:</strong> {userData.email}</p>
+                <p style={{ fontSize: '1.5rem' }}><strong>First Name:</strong> {userData.firstName}</p>
+                <p style={{ fontSize: '1.5rem' }}><strong>Last Name:</strong> {userData.lastName}</p>
                 <button onClick={handleLogout}>Logout</button>
             </div>
         </div>

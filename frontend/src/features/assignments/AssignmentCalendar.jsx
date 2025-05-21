@@ -17,6 +17,8 @@ const AssignmentCalendar = () => {
           withCredentials: true,
         });
 
+        console.log(response.data);
+
         const formatted = response.data.map((a) => ({
           event_id: a.ass_id,
           title: `${a.name} (${a.class_name})`,
@@ -25,6 +27,8 @@ const AssignmentCalendar = () => {
           editable: false,
           deletable: false
         }));
+
+        console.log(formatted);
 
         setEvents(formatted);
       } catch (error) {
@@ -49,11 +53,24 @@ const AssignmentCalendar = () => {
   }
 
   return (
-    <div className="AssignmentCalendar" style={{ marginLeft: '20rem', marginTop: '5rem' }}>
+    <div className="AssignmentCalendar" style={{ marginLeft: 'auto', marginTop: '5rem' }}>
       <Navbar />
       <Scheduler
-        view="month"
+        view="month" // default view
         events={events}
+        day={{
+          startHour: 0,
+          endHour: 24,
+          step: 60,         // Optional: controls time slot size (e.g., 60 minutes)
+          navigation: true  // Optional: enables date navigation
+        }}
+        week={{
+          startHour: 0,
+          endHour: 24,
+          step: 60,
+          navigation: true
+        }}
+        hourFormat="24"      // Optional: shows 24-hour time format instead of AM/PM
       />
     </div>
   )
