@@ -221,8 +221,8 @@ class ClassroomsViewSet(viewsets.GenericViewSet):
         except Classrooms.DoesNotExist:
             return Response({"error": "Classroom not found"}, status=status.HTTP_404_NOT_FOUND)
         
-        assignments = classroom.assignments.all()
-        
+        assignments = user.assignmentsUser.filter(class_id=classroom)
+        # print(assignments)
         serializer = AssignmentsSerializer(assignments, many=True)
         
         return Response(serializer.data, status=status.HTTP_200_OK)

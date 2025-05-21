@@ -72,7 +72,7 @@ const classRoomPage = () => {
     }, [classId]);
 
     return (
-        <div className="assignmentPage">
+        <div className="assignmentPage" style={{ marginTop: '5rem' }}>
             <Navbar />
             <div className="classroom-header" style={{ alignItems: 'center', marginTop: '7rem' }}>
                 <h2>Hello {userData.firstName} {userData.lastName}</h2>
@@ -146,7 +146,7 @@ const classRoomPage = () => {
                         {/* Date Picker */}
                         <div style={{ marginBottom: '1.5rem' }}>
                             <input
-                                type="date"
+                                type="datetime-local"
                                 name="dueDate"
                                 value={createAssignmentForm.dueDate}
                                 onChange={handleChange}
@@ -166,7 +166,7 @@ const classRoomPage = () => {
                 </div>
 
             )}
-            <h2 style={{ marginTop: '2rem', marginLeft: '5rem' }}>Assignments</h2>
+            <h2 style={{ marginTop: '2rem' }}>Assignments</h2>
             <div className="assignment-cards-container" style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', padding: '16px' }}>
                 {assignments.map(assignment => (
                     <AssignmentCard
